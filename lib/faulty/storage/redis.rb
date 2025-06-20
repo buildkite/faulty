@@ -293,7 +293,7 @@ class Faulty
       end
 
       def ckey(circuit_name, *parts)
-        key('circuit', "{#{circuit_name}}", *parts)
+        key('circuit', hashtag(circuit_name), *parts)
       end
 
       # @return [String] The key for circuit options
@@ -323,7 +323,7 @@ class Faulty
 
       # Get the current key to add circuit names to
       def list_key
-        key('list', "{#{current_list_block}}")
+        key('list', hashtag(current_list_block))
       end
 
       # Get all active circuit list keys
@@ -348,8 +348,12 @@ class Faulty
         num_blocks = (options.circuit_ttl.to_f / options.list_granularity).floor + 1
         start_block = current_list_block - num_blocks + 1
         num_blocks.times.map do |i|
-          key('list', "{#{start_block + i}}")
+          key('list', hashtag(start_block + i))
         end
+      end
+
+      def hashtag(part)
+        "{#{part}}"
       end
 
       # Get the block number for the current list set
